@@ -2,13 +2,18 @@
 title: "Reproducable Research - Assignment 1"
 author: "Bijay Ghimire"
 date: "February 7, 2016"
-output: html_document
+output: 
+  html_document: 
+    keep_md: yes
 ---
 
 #Introduction
 Analyze activity monitoring data to address key question related to the activity pattern and trend. This analysis makes use of data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.
 
-##Load, analyze and cleanse Data
+Data is downloaded from [Activity monitoring data](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip).
+
+
+##Load, analyze and cleanse the data
 ```{r}
 setwd("C:\\Personal\\DataScientistCourse\\06_Reproducable Research\\Assignment1")
 fitnessActivityData <- read.table("activity.csv", 
@@ -114,8 +119,6 @@ plot(x=fitnessActivityData$TimeStamp,
 Daily time series plot with average steps in each 5 min interval
 ```{r}
 intervalAverage <- aggregate(steps ~ interval, data=fitnessActivityData, FUN=mean, na.rm = TRUE)
-#intervalAverage[["interval"]]<-as.integer(intervalAverage[["interval"]])
-#intervalAverage<-intervalAverage[order(intervalAverage$interval),]
 plot(x=intervalAverage$interval, 
      y=intervalAverage$steps, type="l", 
      main="Average number of steps in each 5 min interval of a day",
@@ -123,6 +126,8 @@ plot(x=intervalAverage$interval,
      ylab="Number of steps"
 )
 ```
+
+
 Daily time series plot with maximun steps in each 5 min interval
 
 ```{r}
@@ -147,8 +152,18 @@ fitnessActivityDataWithoutNA$steps[is.na(fitnessActivityDataWithoutNA$steps)]<-
                         fitnessActivityDataWithoutNA$interval[is.na(fitnessActivityDataWithoutNA$steps)], 
                         intervalAverage$interval),2]
 
-summary(fitnessActivityDataWithoutNA$steps)
+```
 
+Let us check the summary of data to see the status of missing values:
+Original data
+```{r}
+summary(fitnessActivityData$steps)
+```
+Here we see 2304  NA values
+
+Data without NA 
+```{r}
+summary(fitnessActivityDataWithoutNA$steps)
 ```
 Here we do not see any NA values. Let us plot this and compare with original plot
 
@@ -162,7 +177,7 @@ hist(dailyTotalStepsWithoutNA$steps,breaks=20, main = "Days by Steps without NA"
 ```
 
 
-#weekend vs weekdays analysis
+#Weekend vs weekdays analysis - compare the activity
 ```{r}
 fitnessActivityData$day <- weekdays(fitnessActivityData$date)
 #Assign Weekend if day is Saturday or Sunday, othewise Weekday
@@ -178,3 +193,4 @@ xyplot(steps ~ interval | factor(weekDayIndicator), data=intervalSummary, aspect
 
 ```
 
+I see much activity throughout the day in weekends
