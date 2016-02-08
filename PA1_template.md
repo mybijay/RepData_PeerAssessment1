@@ -183,7 +183,8 @@ plot(x=intervalMax$interval,
 ![](PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
 
 #Imputing missing values
-I am using average value to fill in the missing value for each 5 minute interval,
+I am using average value to fill in the missing value for each 5 minute interval.There are other stratigies as well - taking median of each interval. To simplyfy the computation one can also take mean or median of whole data to fill in the missing value, which will not be that accurate assumption. 
+
 
 ```r
 intervalAverage <- aggregate(steps ~ interval, data=fitnessActivityData, FUN=mean, na.rm = TRUE)
@@ -207,6 +208,7 @@ summary(fitnessActivityData$steps)
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
 ##    0.00    0.00    0.00   37.38   12.00  806.00    2304
 ```
+
 Here we see 2304  NA values
 
 Data without NA 
@@ -219,6 +221,7 @@ summary(fitnessActivityDataWithoutNA$steps)
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##    0.00    0.00    0.00   37.38   27.00  806.00
 ```
+
 Here we do not see any NA values. Let us plot this and compare with original plot
 
 
@@ -253,3 +256,6 @@ xyplot(steps ~ interval | factor(weekDayIndicator), data=intervalSummary, aspect
 ![](PA1_template_files/figure-html/unnamed-chunk-16-1.png) 
 
 I see much activity throughout the day in weekends
+
+
+***

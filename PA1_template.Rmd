@@ -59,7 +59,6 @@ fitnessActivityData[["TimeStamp"]]<-paste(fitnessActivityData[["date"]],fitnessA
 #convert timestamp field from char to time (POSIXct)
 fitnessActivityData[["TimeStamp"]]<-as.POSIXct(fitnessActivityData[["TimeStamp"]],
                                             format="%Y-%m-%d %H%M",tz = "GMT")
-
 ```
 
 
@@ -141,7 +140,8 @@ plot(x=intervalMax$interval,
 ```
 
 #Imputing missing values
-I am using average value to fill in the missing value for each 5 minute interval,
+I am using average value to fill in the missing value for each 5 minute interval.There are other stratigies as well - taking median of each interval. To simplyfy the computation one can also take mean or median of whole data to fill in the missing value, which will not be that accurate assumption. 
+
 ```{r}
 intervalAverage <- aggregate(steps ~ interval, data=fitnessActivityData, FUN=mean, na.rm = TRUE)
 
@@ -159,12 +159,14 @@ Original data
 ```{r}
 summary(fitnessActivityData$steps)
 ```
+
 Here we see 2304  NA values
 
 Data without NA 
 ```{r}
 summary(fitnessActivityDataWithoutNA$steps)
 ```
+
 Here we do not see any NA values. Let us plot this and compare with original plot
 
 ```{r}
@@ -194,3 +196,6 @@ xyplot(steps ~ interval | factor(weekDayIndicator), data=intervalSummary, aspect
 ```
 
 I see much activity throughout the day in weekends
+
+
+***
